@@ -16,14 +16,6 @@ urlpatterns = [
     path("", include("goliath.users.urls")),
 ]
 
-
-# ensure flatpage catchall does not break append slash middleware
-urlpatterns += [
-    re_path(
-        r"^(?P<url>.*/)$", cache_control(max_age=3600, public=True)(views.flatpage)
-    ),
-]
-
 # hardcode urls for important flat pages
 urlpatterns += [
     path(
@@ -79,3 +71,11 @@ if settings.DEBUG:
         import debug_toolbar
 
         urlpatterns = [path("__debug__/", include(debug_toolbar.urls))] + urlpatterns
+
+# 1) the catchall flatpages must be placed in the bottom
+# 2) the regex ensures that the `append slash & redirect` middleware works
+urlpatterns += [
+    re_path(
+        r"^(?P<url>.*/)$", cache_control(max_age=3600, public=True)(views.flatpage)
+    ),
+]

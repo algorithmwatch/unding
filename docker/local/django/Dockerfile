@@ -1,19 +1,23 @@
-FROM python:3.8-slim-buster
+FROM python:3.8
 
 ENV PYTHONUNBUFFERED 1
 ENV PYTHONDONTWRITEBYTECODE 1
+
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
 
 RUN apt-get update \
   # dependencies for building Python packages
   && apt-get install -y build-essential \
   # psycopg2 dependencies
   && apt-get install -y libpq-dev \
-  # install git for dev container
+  # git for dev container
   && apt-get install -y git \
   # needed by django-dbbackup to dump postgres
   && apt-get install -y postgresql-client \
   # Translations dependencies
   && apt-get install -y gettext \
+  # node/npm
+  && apt-get install -y nodejs \
   # cleaning up unused files
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && rm -rf /var/lib/apt/lists/*
@@ -43,5 +47,9 @@ RUN sed -i 's/\r$//g' /start-flower
 RUN chmod +x /start-flower
 
 WORKDIR /app
+
+COPY ./package.json ./package-lock.json ./
+RUN npm install
+ENV PATH ./node_modules/.bin/:$PATH
 
 ENTRYPOINT ["/entrypoint"]

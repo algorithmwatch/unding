@@ -1,10 +1,10 @@
 # Only for deployment /w Dokku
 # Check out docker/local/django/Dockerfile for the dev Dockerfile.
 
-FROM node:12-stretch-slim as client-builder
+FROM node:14-stretch-slim as client-builder
 
 WORKDIR /app
-COPY ./package.json /app
+COPY ./package.json ./package-lock.json ./
 RUN npm install && npm cache clean --force
 COPY . /app
 RUN npm run build
@@ -30,12 +30,12 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/*
 
 RUN addgroup --system django \
-    && adduser --system --ingroup django django
+  && adduser --system --ingroup django django
 
 # Requirements are installed here to ensure they will be cached.
 COPY ./requirements /requirements
 RUN pip install --no-cache-dir -r /requirements/production.txt \
-    && rm -rf /requirements
+  && rm -rf /requirements
 
 COPY --from=client-builder --chown=django:django /app /app
 

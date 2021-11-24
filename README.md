@@ -62,14 +62,6 @@ docker-compose -f docker-compose.local.yml down
 docker volume rm goliath_local_node_modules
 ```
 
-#### Regarding the problems of `node_modules`
-
-There are sometimes problems with the data volume of the `node_modules` folder.
-Right now it's not clear whether this is a feature or a bug of docker volumes.
-Most likely we made a mistake with our setup.
-The problem arises from mapping the `node_modules` to the development container of VS Code (since we need linters etc.).
-This seems to prevent installing new `node_modules`.
-
 ### Test coverage
 
 To run the tests, check your test coverage, and generate an HTML

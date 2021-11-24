@@ -5,6 +5,7 @@ from simple_history.admin import SimpleHistoryAdmin
 
 from .models import (
     AutoreplyKeyword,
+    Campaign,
     Case,
     CaseType,
     Entity,
@@ -174,6 +175,13 @@ class ReceivedAttachmentAdmin(RemoveAdminAddButtonMixin, admin.ModelAdmin):
     ]
 
 
+class CampaignAdmin(HistoryDeletedFilterMixin, SimpleHistoryAdmin):
+    list_display = [
+        "id",
+        "title",
+    ]
+
+
 admin.site.register(Entity, EntityAdmin)
 admin.site.register(CaseType, CaseTypeAdmin)
 admin.site.register(Case, CaseAdmin)
@@ -182,6 +190,7 @@ admin.site.register(ReceivedMessage, ReceivedMessageAdmin)
 admin.site.register(ReceivedAttachment, ReceivedAttachmentAdmin)
 admin.site.register(SentMessage, SentMessageAdmin)
 admin.site.register(AutoreplyKeyword, AutoreplyKeywordAdmin)
+admin.site.register(Campaign, CampaignAdmin)
 
 # TODO: put into seperate app
 

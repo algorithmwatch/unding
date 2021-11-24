@@ -20,7 +20,7 @@ def test_reminder_fake_date():
     remind users that haven't interacted for a long time
     """
     with freeze_time("2013-12-13"):
-        OngoingCaseFactory(ongoing=4, force_status=Case.Status.WAITING_USER_INPUT)
+        OngoingCaseFactory(ongoing=4, status=Case.Status.WAITING_USER_INPUT)
         c = OngoingCaseFactory(ongoing=4)
         c.status = Case.Status.WAITING_USER_INPUT
         c.save()
@@ -37,9 +37,7 @@ def test_reminder_fake_date_no_remind():
     yesterday = today - datetime.timedelta(days=1)
 
     with freeze_time(prev_time):
-        c = OngoingCaseFactory(
-            ongoing=4, force_status=Case.Status.WAITING_INITIAL_EMAIL_SENT
-        )
+        c = OngoingCaseFactory(ongoing=4, status=Case.Status.WAITING_INITIAL_EMAIL_SENT)
         c.status = Case.Status.WAITING_RESPONSE
         c.save()
 
@@ -63,9 +61,7 @@ def test_reminder_fake_date_remind_and_stop():
     prev_time4 = today - datetime.timedelta(days=10)
 
     with freeze_time(prev_time1):
-        c = OngoingCaseFactory(
-            ongoing=4, force_status=Case.Status.WAITING_INITIAL_EMAIL_SENT
-        )
+        c = OngoingCaseFactory(ongoing=4, status=Case.Status.WAITING_INITIAL_EMAIL_SENT)
         c.status = Case.Status.WAITING_RESPONSE
         c.save()
 
@@ -99,9 +95,7 @@ def test_reminder_entities_fake_date_remind_and_stop():
     prev_time4 = today - datetime.timedelta(days=10)
 
     with freeze_time(prev_time1):
-        c = OngoingCaseFactory(
-            ongoing=4, force_status=Case.Status.WAITING_INITIAL_EMAIL_SENT
-        )
+        c = OngoingCaseFactory(ongoing=4, status=Case.Status.WAITING_INITIAL_EMAIL_SENT)
         c.status = Case.Status.WAITING_RESPONSE
         c.save()
 

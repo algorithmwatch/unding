@@ -24,7 +24,14 @@ from django.views.generic.list import ListView
 from ratelimit.decorators import ratelimit
 
 from .forms import CaseStatusForm, get_admin_form_preview
-from .models import Case, CaseType, PostCaseCreation, PublicFile, ReceivedAttachment
+from .models import (
+    Campaign,
+    Case,
+    CaseType,
+    PostCaseCreation,
+    PublicFile,
+    ReceivedAttachment,
+)
 from .tasks import send_admin_notification_waiting_approval_case
 
 User = get_user_model()
@@ -267,6 +274,12 @@ class DashboardPageView(TemplateView):
         ).order_by("-total")[:3]
 
         return context
+
+
+@method_decorator(cache_control(max_age=3600, public=True), name="dispatch")
+class CampaignView(DetailView):
+    model = Campaign
+    template_name = "casehandling/campaign_detail.html"
 
 
 @never_cache

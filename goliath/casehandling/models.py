@@ -630,6 +630,32 @@ class ExternalSupport(TimeStampMixin):
         indexes = [GinIndex(fields=["search_vector"])]
 
 
+class Campaign(TimeStampMixin):
+    title = models.CharField(max_length=255, blank=True, null=True)
+    slug = models.SlugField(
+        default="", editable=False, max_length=255, null=False, blank=False
+    )
+    description = MarkupField(markup_type="markdown", blank=True, null=True)
+    image = models.ForeignKey(
+        "PublicFile", on_delete=models.SET_NULL, null=True, blank=True
+    )
+    case_types = models.ManyToManyField("CaseType")
+
+    history = HistoricalRecords(
+        excluded_fields=["_description_rendered", "description_markup_type"]
+    )
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse("campaign-detail", kwargs={"pk": self.pk, "slug": self.slug})
+
+
 # TODO: put into seperate app
 from django.contrib.flatpages.models import FlatPage
 

@@ -3,6 +3,7 @@ from rest_framework import routers
 
 from .api_views import CaseTypeViewSet, ExternalSupportViewSet
 from .views import (
+    CampaignView,
     CaseCreateView,
     CaseDetailAndUpdateView,
     CaseListView,
@@ -42,6 +43,11 @@ urlpatterns = [
         "fall/<str:slug>/<int:pk>/",
         view=CaseDetailAndUpdateView.as_view(),
         name="cases-detail",
+    ),
+    path(
+        "kampagne/<str:slug>/<int:pk>/",
+        view=CampaignView.as_view(),
+        name="campaign-detail",
     ),
     path("fall-auto-reply/<int:pk>/", view=send_autoreply, name="case-sent-autoreply"),
     path(

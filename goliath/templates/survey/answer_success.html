@@ -18,8 +18,7 @@
     <div class="mt-8 mx-auto max-w-md">
       <h2 class="hl-lg mb-2.5">Sagen Sie es weiter</h2>
       <div class="text-4xl flex justify-center">
-          <a href="#" class="mr-4 hover:text-brown-800"><i class="fab fa-twitter-square"></i></a>
-          <a href="#" class="hover:text-brown-80/0"><i class="fab fa-facebook-square"></i></a>
+        {% include 'partials/share_social_media.html' with text=share_text url=share_url %}
       </div>
     </div>
 

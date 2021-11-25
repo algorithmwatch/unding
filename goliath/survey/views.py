@@ -5,12 +5,11 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_control, never_cache
-from django.views.generic.base import TemplateView, View
+from django.views.generic.base import View
+from django.views.generic.detail import DetailView
 from ratelimit.decorators import ratelimit
 
 from goliath.survey.models import Survey, SurveyAnswer
-
-# Create your views here.
 
 
 @method_decorator(
@@ -39,6 +38,7 @@ class SurveyAnswerCreateView(View):
             {
                 "url": reverse(
                     "survey-success",
+                    kwargs={"pk": survey.pk},
                 )
             }
         )
@@ -57,5 +57,17 @@ class SurveyAnswerCreateView(View):
 
 
 @method_decorator(cache_control(max_age=3600, public=True), name="dispatch")
-class SurveySuccess(TemplateView):
+class SurveySuccess(DetailView):
+    model = Survey
     template_name = "survey/answer_success.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context["share_url"] = self.request.build_absolute_uri(
+            self.object.get_absolute_url()
+        )
+        context[
+            "share_text"
+        ] = f"""Jetzt an der Umfrage "{self.object.title}" teilnehmen!"""
+        return context

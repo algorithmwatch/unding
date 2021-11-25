@@ -16,39 +16,7 @@
   // connected. This is typically a file mount in .devcontainer/docker-compose.yml
   "workspaceFolder": "/app",
   // Set *default* container specific settings.json values on container create.
-  "settings": {
-    "editor.formatOnSave": true,
-    "terminal.integrated.shell.linux": "/bin/bash",
-    // Python
-    "python.pythonPath": "/usr/local/bin/python",
-    "python.formatting.provider": "black",
-    "python.linting.enabled": true,
-    "python.languageServer": "Pylance",
-    "python.linting.pylintEnabled": true,
-    // sort imports on save
-    "[python]": {
-      "editor.codeActionsOnSave": {
-        "source.organizeImports": true
-      }
-    },
-    "editor.codeActionsOnSave": {
-      "source.fixAll.stylelint": true
-    },
-    // yaml
-    "yaml.format.enable": true,
-    // CSS and co.
-    "less.validate": false,
-    "scss.validate": false,
-    "stylelint.enable": true,
-    // tailwind intellisense config
-    "css.validate": false,
-    "editor.quickSuggestions": {
-      "strings": true
-    },
-    "tailwindCSS.includeLanguages": {
-      "django-html": "html"
-    }
-  },
+  "settings": {},
   "extensions": [
     "ms-python.python",
     "ms-python.vscode-pylance",

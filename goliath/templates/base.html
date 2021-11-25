@@ -31,13 +31,13 @@
 
     {% include "messages.html" %}
 
-    <main class="{% block content_class %}{% endblock %}">
+    <main class="{% block content_class %}{% endblock %} mb-4">
       {% block content %}{% endblock %}
     </main>
 
-    {% include "footer.html" %}
-
-    {{ IS_EMBED  }}
+    {% if not IS_EMBED %}
+      {% include "footer.html" %}
+    {% endif %}
 
     {# Global Javascript #}
     <script src="{% static 'main.js' %}"></script>

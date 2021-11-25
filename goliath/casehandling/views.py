@@ -209,6 +209,14 @@ class CaseSuccessView(
     template_name = "casehandling/case_success.html"
     success_message = "Vielen Dank"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        ct = context["object"].case_type
+        context["share_url"] = self.request.build_absolute_uri(ct.get_absolute_url())
+        context["share_text"] = f"""Jetzt Unding "{ct.title}" anfechten!"""
+        return context
+
     def get_success_url(self):
         return self.get_object().cases.first().get_absolute_url()
 

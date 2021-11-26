@@ -7,6 +7,7 @@
   {% endwith %}
 {% endblock %}
 
+{% block body_class %}{% if IS_EMBED %}bg-blue-100{% endif %}{% endblock %}
 {% block content_class %}page-wrap-wide page-wrap-space{% endblock %}
 
 {% block content %}

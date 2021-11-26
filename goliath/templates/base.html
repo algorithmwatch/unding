@@ -27,7 +27,9 @@
 
   <body class="text-brown-1000 overflow-y-scroll {% block body_class %}{% endblock %}">
 
-    {% include "header.html" %}
+    {% if not IS_EMBED %}
+      {% include "header.html" %}
+    {% endif %}
 
     {% include "messages.html" %}
 

@@ -7,6 +7,7 @@
   {% endwith %}
 {% endblock %}
 
+{% block body_class %}{% if IS_EMBED %}bg-blue-100{% endif %}{% endblock %}
 {% block content_class %}page-wrap-wide page-wrap-space{% endblock %}
 
 {% block content %}
@@ -18,13 +19,15 @@
     <form method="post" class="mt-8">
       {% csrf_token %}
 
-      <div class="flex items-center mx-auto max-w-md mb-8 p-4 border border-blue-300 rounded-xl text-blue-700">
-        <div class="text-left">Dürfen wir Sie kontaktieren, um Ihnen Fragen zu Ihrem Fall zu stellen?</div>
-        <div class="flex items-center ml-5">
-          {{ form.is_contactable|add_class:"test" }}
-          <label class="input-label ml-2 mb-0" for="id_is_contactable">Ja</label>
+      {% if not IS_EMBED %}
+        <div class="flex items-center mx-auto max-w-md mb-8 p-4 border border-blue-300 rounded-xl text-blue-700">
+          <div class="text-left">Dürfen wir Sie kontaktieren, um Ihnen Fragen zu Ihrem Fall zu stellen?</div>
+          <div class="flex items-center ml-5">
+            {{ form.is_contactable|add_class:"test" }}
+            <label class="input-label ml-2 mb-0" for="id_is_contactable">Ja</label>
+          </div>
         </div>
-      </div>
+      {% endif %}
 
       <div class="mx-auto max-w-md mb-3">
         {% render_field form.post_creation_hint rows="3" placeholder="Haben Sie noch Hinweise etc., die Sie uns mitteilen möchten?" class="text-input text-input--regular border border-brown-1000 bg-white w-full" %}
@@ -40,9 +43,11 @@
       </div>
     </div>
 
-    <div class="mt-8 text-sm">
-      <a href="/" class="underline hover:no-underline">Zurück zur Startseite</a>
-    </div>
+    {% if not IS_EMBED %}
+      <div class="mt-8 text-sm">
+        <a href="/" class="underline hover:no-underline">Zurück zur Startseite</a>
+      </div>
+    {% endif %}
 
   </div>
 {% endblock %}

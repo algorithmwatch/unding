@@ -17,6 +17,8 @@
   "workspaceFolder": "/app",
   // Set *default* container specific settings.json values on container create.
   "settings": {},
+  // You need to remove the named volume `goliath_goliath_extensions` if you add a new extension.
+  // See the documenation / README for details.
   "extensions": [
     "ms-python.python",
     "ms-python.vscode-pylance",

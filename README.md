@@ -21,13 +21,17 @@ See [docs/exampleenv](./docs/exampleenv).
 
 We recommend to use [VS Code](https://code.visualstudio.com/) with the [Docker](https://docs.docker.com/get-docker/)-based [VS Code Development Container](https://code.visualstudio.com/docs/remote/containers).
 
+As an alternative, see below in the following section on how to use Docker without VS Code.
+
 To start the development server: Open a new terminal and run `/start`.
 
 To run management commands: Open a new terminal and run `./manage.py $command`, e.g., `./manage.py makemigrations`.
 
-If you add a new VS Code extension, you need to remove this named volume `docker volume rm goliath_extensions`. ([Extr](https://code.visualstudio.com/docs/remote/containers-advanced#_avoiding-extension-reinstalls-on-container-rebuild))
+#### Adding new extensions
 
-As an alternative, see below on how to use Docker without VS Code.
+VS-Code extensions are cached between rebuilds.
+If you add a new VS Code extension, you need to remove the named volume `docker-compose -f docker-compose.local.yml down && docker volume rm goliath_goliath_extensions`.
+([Read more](https://code.visualstudio.com/docs/remote/containers-advanced#_avoiding-extension-reinstalls-on-container-rebuild))
 
 ### Docker-Compose
 

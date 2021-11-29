@@ -55,19 +55,28 @@ class CustomUserManager(UserManager):
                 answers["awlastnamequestion"],
                 answers["awemailquestion"],
             )
-            user = self.create_user(
-                first_name=first_name, last_name=last_name, email=email
-            )
-            # cleaned version
-            email = user.email
 
-            EmailAddress.objects.create(
-                user=user, email=email, primary=True, verified=False
-            )
+            user = User.objects.filter(email=email).first()
 
-            from ..utils.email import send_magic_link
+            if user is None:
+                user = self.create_user(
+                    first_name=first_name, last_name=last_name, email=email
+                )
+                # cleaned version
+                email = user.email
 
-            send_magic_link(user, email, "magic_registration")
+                EmailAddress.objects.create(
+                    user=user, email=email, primary=True, verified=False
+                )
+
+                from ..utils.email import send_magic_link
+
+                send_magic_link(user, email, "magic_registration")
+            else:
+                from ..utils.email import send_magic_link
+
+                send_magic_link(user, email, "magic_verify_sending")
+
         return user, is_logged_in
 
 

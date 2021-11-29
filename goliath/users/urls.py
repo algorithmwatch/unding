@@ -3,6 +3,7 @@ from django.urls import include, path, re_path
 from goliath.users.views import (
     MagicLinkLoginEmail,
     MagicLinkVerifyEmail,
+    MagicLinkVerifySending,
     UserUpdate,
     export_text,
     magic_link_login_view,
@@ -20,6 +21,11 @@ urlpatterns = [
         "magic/login/",
         MagicLinkLoginEmail.as_view(),
         name="magic_login",
+    ),
+    path(
+        "magic/veriy-sending/",
+        MagicLinkVerifySending.as_view(),
+        name="magic_verify_sending",
     ),
     path(
         "account/login/magic/",

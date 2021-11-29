@@ -104,14 +104,25 @@ def send_magic_link(user, email, viewname):
     context = {"activate_url": magic_link}
 
     subject = render_to_string("account/email/email_confirmation_subject.txt")
-    body_text = render_to_string(
-        "account/email/email_confirmation_message.txt",
-        context,
-    )
-    body_html = render_to_string(
-        "account/email/email_confirmation_message.html",
-        context,
-    )
+
+    if viewname == "magic_registration":
+        body_text = render_to_string(
+            "account/email/email_confirmation_signup_message.txt",
+            context,
+        )
+        body_html = render_to_string(
+            "account/email/email_confirmation_signup_message.html",
+            context,
+        )
+    else:
+        body_text = render_to_string(
+            "account/email/email_confirmation_message.txt",
+            context,
+        )
+        body_html = render_to_string(
+            "account/email/email_confirmation_message.html",
+            context,
+        )
 
     send_mail(
         subject,

@@ -156,6 +156,50 @@ class MagicLinkVerifyEmail(View):
         return redirect(redirect_url)
 
 
+class MagicLinkVerifySending(View):
+    """
+    Really ugly code. This was copied from the above view to modify it slighty for the special case
+    when a user has already an account, but creates a new case without being logged in.
+    This needs to be done in a better way... FIXME
+    """
+
+    def get(self, request):
+        email = request.GET.get("email")
+        user = get_user(request, scope=email)
+
+        if user is None:
+            raise PermissionDenied
+
+        email_address = EmailAddress.objects.filter(user=user, email=email).first()
+
+        if not email_address:
+            raise PermissionDenied
+
+        if not email_address.verified:
+            email_address.verified = True
+            email_address.set_as_primary(conditional=True)
+            email_address.save()
+
+        # very hacky way to determine if the post creation form was already filled or not
+        # need to do it here because the new user need to be logged in
+        first_post_cc = PostCaseCreation.objects.filter(
+            sent_initial_emails_at__isnull=True, user=user
+        ).first()
+        redirect_url = "cases"
+        if first_post_cc is not None:
+            redirect_url = first_post_cc.get_absolute_url()
+
+        # change status, send emails etc.
+        for c in PostCaseCreation.objects.filter(user=user):
+            c.user_verified_afterwards()
+
+        # login
+        login(request, user)
+
+        messages.success(request, "Die Anfragen wurden verschickt. Danke!")
+        return redirect(redirect_url)
+
+
 @require_GET
 @never_cache
 def export_text(request):

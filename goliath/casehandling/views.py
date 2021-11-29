@@ -15,6 +15,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls.base import reverse
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_control, never_cache
+from django.views.decorators.clickjacking import xframe_options_exempt
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_GET, require_POST
 from django.views.generic import DetailView, ListView, View
@@ -42,6 +43,7 @@ class CaseTypeListView(ListView):
     model = CaseType
 
 
+@method_decorator(xframe_options_exempt, name="dispatch")
 @method_decorator(
     ratelimit(
         key="user_or_ip",
@@ -200,6 +202,7 @@ class CaseListView(LoginRequiredMixin, ListView):
         return qs
 
 
+@method_decorator(xframe_options_exempt, name="dispatch")
 @method_decorator(never_cache, name="dispatch")
 class CaseSuccessView(
     SuccessMessageMixin, UserPassesTestMixin, LoginRequiredMixin, UpdateView
@@ -225,6 +228,7 @@ class CaseSuccessView(
         return obj.user == self.request.user
 
 
+@method_decorator(xframe_options_exempt, name="dispatch")
 @method_decorator(cache_control(max_age=3600, public=True), name="dispatch")
 class CaseVerifyEmailView(TemplateView):
     template_name = "casehandling/case_email.html"
@@ -284,6 +288,7 @@ class DashboardPageView(TemplateView):
         return context
 
 
+@method_decorator(xframe_options_exempt, name="dispatch")
 @method_decorator(cache_control(max_age=3600, public=True), name="dispatch")
 class CampaignView(DetailView):
     model = Campaign

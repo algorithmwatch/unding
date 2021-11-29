@@ -4,6 +4,19 @@ import * as Survey from 'survey-jquery';
 // export for others scripts to use
 window.$ = $;
 
+function scrollToQuestion(element) {
+  const offset = 20;
+  const bodyRect = document.body.getBoundingClientRect().top;
+  const elementRect = element.getBoundingClientRect().top;
+  const elementPosition = elementRect - bodyRect;
+  const offsetPosition = elementPosition - offset;
+
+  window.scrollTo({
+    top: offsetPosition,
+    behavior: 'smooth',
+  });
+}
+
 function addUserToJson(surveyJSON) {
   var lastPageIndex = surveyJSON.pages.length - 1;
   var lastPage = surveyJSON.pages[lastPageIndex];
@@ -282,11 +295,7 @@ function setupSurvey(
 
     if (!window.awDontScroll) {
       setTimeout(function () {
-        options.htmlElement.scrollIntoView({
-          behavior: 'smooth',
-          block: 'end',
-          inline: 'end',
-        });
+        scrollToQuestion(options.htmlElement);
       }, 100);
       setTimeout(function () {
         $(options.htmlElement).find('input').focus();

@@ -28,7 +28,7 @@
           Noch Fragen? <a class="font-bold underline hover:no-underline" role="button" @click="processHowToOpen = !processHowToOpen">Klicken Sie hier</a> für eine Prozesserklärung.
         </p>
       </div>
-      <div class="mt-4 mb-12 py-8 bg-orange-200" x-show="processHowToOpen === true">
+      <div class="mt-4 mb-12 py-8 bg-orange-200" x-show="processHowToOpen === true" x-cloak>
         {% include '../pages/process_description.html' %}
       </div>
     </div>
@@ -36,7 +36,7 @@
 
     <div class="hl-xl text-center">{% trans 'Wählen Sie Ihren Fall' %}</div>
 
-    <div class="w-max grid gap-4 lg:gap-8 justify-items-center sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mx-auto">
+    <div class="w-max grid gap-4 sm:gap-6 justify-items-center sm:grid-cols-2 lg:grid-cols-3 mx-auto">
       {% for case_type in object.case_types.all %}
         <div
           class="

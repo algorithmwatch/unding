@@ -97,6 +97,12 @@ class CaseCreateView(View):
         elif case_type.needs_approval:
             send_admin_notification_waiting_approval_case()
 
+        # if the case is opened in an iframe, append the specific `is-embed` paramter
+        is_embed = request.GET.get("is-embed") is not None
+        url_suffix = ""
+        if is_embed:
+            url_suffix = "?is-embed=" + request.GET.get("is-embed")
+
         # just use last case for success page for now
         if is_logged_in:
             return JsonResponse(
@@ -105,6 +111,7 @@ class CaseCreateView(View):
                         "post-wizzard-success",
                         kwargs={"pk": postCC.pk},
                     )
+                    + url_suffix
                 }
             )
         else:
@@ -113,6 +120,7 @@ class CaseCreateView(View):
                     "url": reverse(
                         "post-wizzard-email",
                     )
+                    + url_suffix
                 }
             )
 

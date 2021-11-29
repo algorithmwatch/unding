@@ -224,7 +224,11 @@ function setupSurvey(
       csrfmiddlewaretoken: csrfToken,
     };
 
-    $.post(endpoint + casetypeSlug + '/' + casetypeId + '/', body)
+    // `window.location.search` to pass the GET paramter `is-embed` to the backend
+    $.post(
+      endpoint + casetypeSlug + '/' + casetypeId + '/' + window.location.search,
+      body
+    )
       .done(function (successData) {
         window.awstorage.removeState();
         window.location.replace(successData.url);

@@ -79,6 +79,7 @@ class CaseType(TimeStampMixin):
         blank=True,
         help_text="If not null, show this casetype on the front page. In order of this value.",
     )
+    hide_from_overview = models.BooleanField(default=False)
     icon_name = models.CharField(
         max_length=255, null=True, blank=True, help_text="Font Awesome Icon Names"
     )

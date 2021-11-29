@@ -42,6 +42,13 @@ User = get_user_model()
 class CaseTypeListView(ListView):
     model = CaseType
 
+    def get_queryset(self):
+        """
+        limit to user
+        """
+        qs = CaseType.objects.filter(hide_from_overview=False)
+        return qs
+
 
 @method_decorator(xframe_options_exempt, name="dispatch")
 @method_decorator(

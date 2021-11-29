@@ -98,7 +98,7 @@ class CaseTypeViewSet(viewsets.ReadOnlyModelViewSet):
 
     def filter_queryset(self, queryset):
         # couldn't really make use of django-filter here, FIXME?
-        queryset = super().filter_queryset(queryset)
+        queryset = super().filter_queryset(queryset).filter(hide_from_overview=False)
         q = self.request.GET.get("q")
         if q is not None:
             queryset = queryset.search(q)

@@ -212,9 +212,9 @@ class CaseListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         """
-        limit to user
+        limit to user, only cases with proper case type
         """
-        qs = Case.objects.filter(user=self.request.user)
+        qs = Case.objects.filter(user=self.request.user).filter(case_type__isnull=False)
         return qs
 
 

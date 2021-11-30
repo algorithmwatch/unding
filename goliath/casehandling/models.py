@@ -449,7 +449,7 @@ Mit freundlichen Grüßen
                 self.email,
                 self,
                 text,
-                self.case_type.auto_reply_subject + f"#{self.pk}",
+                (self.case_type.auto_reply_subject or "") + f"#{self.pk}",
             )
 
     def construct_answer_thread(self):

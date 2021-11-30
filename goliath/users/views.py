@@ -102,6 +102,10 @@ class MagicLinkLoginEmail(View):
         login when person opened magic link from email
         """
         email = request.GET.get("email")
+
+        if email is None:
+            return redirect("account_login_magic")
+
         user = get_user(request, scope=email)
 
         if user is None:

@@ -9,7 +9,7 @@
   <div class="max-w-xs mx-auto text-center">
     <h1 class="hl-2xl mb-6">{% trans "Sign In" %}</h1>
 
-    <form class="space-y-4 text-left" method="post" action="{% url 'account_login' %}">
+    <form class="space-y-4 text-left" method="post" action="{% url 'account_login_magic' %}">
       {% csrf_token %}
 
       <div>

@@ -1,3 +1,11 @@
+"""
+This implementation of magic link authentification is not ellegant. Take a look at
+https://github.com/algorithmwatch/dataskop-platform/tree/main/dataskop/users
+to see a more polished solution. If this project ever gets a large refactoring, the user app
+should get improved.
+"""
+
+
 from allauth.account.models import EmailAddress
 from django.contrib import messages
 from django.contrib.auth import get_user_model, login
@@ -81,7 +89,12 @@ def magic_link_login_view(request):
             user = EmailAddress.objects.filter(email=email).first()
 
             if not user:
-                raise PermissionDenied
+                messages.info(
+                    request,
+                    "Es wurde kein Konto mit dieser E-Mail-Adresse gefunden. Bitte neu registrieren.",
+                )
+                return redirect("account_signup")
+
             user = user.user
 
             send_magic_link(user, email, "magic_login")

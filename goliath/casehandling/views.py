@@ -51,6 +51,7 @@ class CaseTypeListView(ListView):
 
 
 @method_decorator(xframe_options_exempt, name="dispatch")
+@method_decorator(csrf_exempt, name="dispatch")
 @method_decorator(
     ratelimit(
         key="user_or_ip",

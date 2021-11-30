@@ -446,7 +446,7 @@ Mit freundlichen Grüßen
 {self.user.full_name}"""
 
             send_entity_message(
-                self.email,
+                e.email,
                 self,
                 text,
                 (self.case_type.auto_reply_subject or "") + f"#{self.pk}",

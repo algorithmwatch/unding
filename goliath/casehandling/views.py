@@ -2,6 +2,7 @@ import datetime
 import json
 import traceback
 
+from django.utils import timezone
 from allauth.account.models import EmailAddress
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import get_user_model
@@ -270,7 +271,7 @@ class DashboardPageView(TemplateView):
         context = super().get_context_data(**kwargs)
 
         # `print_status` is a propery of the model and thus we can't use the ORM's filter functions
-        now = datetime.datetime.now()
+        now = timezone.now()
         time_open_cases = [
             now - x.created_at
             for x in Case.objects.all()

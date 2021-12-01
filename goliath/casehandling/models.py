@@ -1,4 +1,5 @@
 import datetime
+from django.utils import timezone
 
 import cleantext
 from allauth.account.models import EmailAddress
@@ -386,7 +387,7 @@ class Case(TimeStampMixin):
             "Bitte setzen Sie den Status #" + str(self.pk),
             self.user.full_name,
         )
-        self.last_user_reminder_sent_at = datetime.datetime.now()
+        self.last_user_reminder_sent_at = timezone.now()
         self.sent_user_reminders += 1
         self.save()
 
@@ -414,7 +415,7 @@ Mit freundlichen Grüßen
                 "Bitte Antworten Sie auf unsere Anfrage #" + str(self.pk),
             )
 
-        self.last_entities_reminder_sent_at = datetime.datetime.now()
+        self.last_entities_reminder_sent_at = timezone.now()
         # can't use F expression because django-simple-history does not support it
         self.sent_entities_reminders += 1
         self.save()

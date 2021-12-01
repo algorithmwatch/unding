@@ -38,6 +38,10 @@ class CaseManager(models.Manager):
         for case in self.filter(
             status=self.model.Status.WAITING_USER_INPUT,
         ):
+            # skip over faulty cases
+            if case.case_type is None:
+                continue
+
             max_reminders, margin = (
                 case.case_type.user_reminder_max,
                 case.case_type.user_reminder_margin,

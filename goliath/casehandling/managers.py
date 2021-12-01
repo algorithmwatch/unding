@@ -77,6 +77,10 @@ class CaseManager(models.Manager):
         for case in self.filter(
             status=self.model.Status.WAITING_RESPONSE,
         ):
+            # skip over faulty cases
+            if case.case_type is None:
+                continue
+
             max_reminders, margin = (
                 case.case_type.entity_reminder_max,
                 case.case_type.entity_reminder_margin,

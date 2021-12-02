@@ -74,6 +74,10 @@ SECURE_CONTENT_TYPE_NOSNIFF = env.bool(
     "DJANGO_SECURE_CONTENT_TYPE_NOSNIFF", default=True
 )
 
+# SESSION
+SESSION_COOKIE_AGE = 60 * 60 * 24  # 1 day
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+
 # STATIC
 # ------------------------
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"

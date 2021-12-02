@@ -177,7 +177,7 @@ Ich möchte Sie daher bitten, mir eine*n direkte*n Ansprechpartner*in zu vermitt
         CaseType.search.sync_search()
 
     def __str__(self):
-        return self.title
+        return f"{self.title} - #{self.pk}"
 
     def get_absolute_url(self):
         return reverse("new-wizzard", kwargs={"pk": self.pk, "slug": self.slug})
@@ -269,7 +269,7 @@ class Case(TimeStampMixin):
     objects = CaseManager()
 
     def __str__(self) -> str:
-        return f"#{self.pk} {self.case_type}"
+        return f"#{self.pk} - {self.case_type}"
 
     def save(self, *args, **kwargs):
         # `case_type` may be `None` in e.g. a testing environment

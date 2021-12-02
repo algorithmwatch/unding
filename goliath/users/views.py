@@ -230,4 +230,6 @@ def export_text(request):
             )
             export_string += m_text + "\n\n"
 
-    return HttpResponse(export_string, content_type="text/plain; charset=UTF-8")
+    response = HttpResponse(export_string, content_type="text/plain; charset=UTF-8")
+    response["Content-Disposition"] = 'attachment; filename="unding-export.txt"'
+    return response

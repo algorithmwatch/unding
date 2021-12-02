@@ -15,7 +15,6 @@ class SurveyAdmin(HistoryDeletedFilterMixin, SimpleHistoryAdmin):
         "created_at",
         "title",
     ]
-    view_on_site = True
 
 
 class SurveyAnswerAdmin(RemoveAdminAddButtonMixin, SimpleHistoryAdmin):

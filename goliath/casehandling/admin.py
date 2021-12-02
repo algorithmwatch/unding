@@ -96,7 +96,6 @@ class CaseAdmin(RemoveAdminAddButtonMixin, SimpleHistoryAdmin):
     ]
     list_filter = (ApprovalFilter, HistoryDeletedFilter)
     actions = ["aprove_case"]
-    view_on_site = False
 
     def aprove_case(self, request, queryset):
         done_ids = set()
@@ -116,7 +115,7 @@ class CaseTypeAdmin(HistoryDeletedFilterMixin, SimpleHistoryAdmin):
         "created_at",
         "title",
     ]
-    view_on_site = False
+    exclude = ("search_vector",)
 
 
 class EntityAdmin(HistoryDeletedFilterMixin, SimpleHistoryAdmin):
@@ -161,6 +160,7 @@ class ExternalSupportAdmin(HistoryDeletedFilterMixin, SimpleHistoryAdmin):
         "name",
         "url",
     ]
+    exclude = ("search_vector",)
 
 
 class AutoreplyKeywordAdmin(HistoryDeletedFilterMixin, SimpleHistoryAdmin):

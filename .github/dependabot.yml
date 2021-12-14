@@ -14,5 +14,7 @@ updates:
     ignore:
       - dependency-name: "django"
         update-types: ["version-update:semver-minor"]
+      - dependency-name: "django"
+        update-types: ["version-update:semver-major"]
     allow:
       - dependency-name: "django"

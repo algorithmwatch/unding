@@ -94,7 +94,18 @@ class CaseAdmin(RemoveAdminAddButtonMixin, SimpleHistoryAdmin):
         "user__last_name",
         "user__email",
     ]
-    list_filter = (ApprovalFilter, HistoryDeletedFilter)
+    list_filter = (
+        ApprovalFilter,
+        HistoryDeletedFilter,
+        "selected_entities",
+        "approved_by",
+        "case_type",
+        "status",
+        "sent_user_reminders",
+        "sent_entities_reminders",
+        "last_entities_reminder_sent_at",
+        "last_user_reminder_sent_at",
+    )
     actions = ["aprove_case"]
 
     def aprove_case(self, request, queryset):

@@ -11,7 +11,7 @@ Get the code, create .ENV files for local development.
 ```bash
 git clone git@github.com:algorithmwatch/goliath.git
 cd goliath
-mkdir -p .envs/.local/.django && mkdir -p .envs/.local/.postgres
+mkdir .envs && cp -r docs/exampleenv .envs/.local/
 ```
 
 Adjust `.envs/.local` to you needs.

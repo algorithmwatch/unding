@@ -5,25 +5,25 @@
   {% meta_tags title='Neuer Fall' %}
 {% endblock %}
 
-{% block body_class %}bg-blue-100{% endblock %}
+{% block body_class %}bg-blue-100 text-base{% endblock %}
 {% block content_class %}page-wrap-wide{% endblock %}
 
 {% block content %}
   <div class="pb-16">
-    <div class="fixed bg-blue-200 w-full h-16 flex items-center justify-center">
-      <h1 class="hl-2xl text-center">{{ object.title }}</h1>
+    <div class="fixed z-50 bg-blue-200 w-full max-w-7xl h-16 flex items-center justify-center">
+      <h1 class="hl-xl text-center">{{ object.title }}</h1>
     </div>
   </div>
 
   <div class="mt-8 px-8 space-y-8">
 
-    <div class="text-center text-lg">
+    <div class="text-center">
       {{object.description.rendered|safe}}
     </div>
 
     <div x-data="{ processHowToOpen: false }" class="mb-6">
       <div class="flex items-center border border-blue-300 rounded-md px-4 py-3">
-        <div class="mr-2 flex items-center"><i class="text-xl far fa-question-circle"></i></div>
+        <div class="hidden sm:flex mr-2 items-center"><i class="text-xl far fa-question-circle"></i></div>
         <p>
           Noch Fragen? <a class="font-bold underline hover:no-underline" role="button" @click="processHowToOpen = !processHowToOpen">Klicken Sie hier</a> für eine Prozesserklärung.
         </p>
@@ -36,7 +36,7 @@
 
     <div class="hl-xl text-center">{% trans 'Wählen Sie Ihren Fall' %}</div>
 
-    <div class="w-max grid gap-4 sm:gap-6 justify-items-center sm:grid-cols-2 lg:grid-cols-3 mx-auto">
+    <div class="w-max grid gap-4 sm:gap-6 justify-items-center sm:grid-cols-2 md:grid-cols-3 mx-auto">
       {% for case_type in object.case_types.all %}
         <div
           class="
@@ -56,7 +56,7 @@
             {% endif %}
 
             {# Name #}
-            <div class="font-bold text-lg leading-6 mt-3">{{ case_type.title }}</div>
+            <div class="font-bold leading-6 mt-3">{{ case_type.title }}</div>
 
             {# Border #}
             <div class="border-t border-brown-1000 h-px w-28 my-4"></div>
@@ -85,7 +85,7 @@
             </div>
 
             {# Name #}
-            <div class="font-bold text-lg leading-6 mt-3">Nicht dabei?</div>
+            <div class="font-bold leading-6 mt-3">Nicht dabei?</div>
 
             {# Border #}
             <div class="border-t border-brown-1000 h-px w-28 my-4"></div>

@@ -3,6 +3,7 @@ version: '3'
 volumes:
   local_media_files:
   local_postgres_data:
+  local_node_modules:
 services:
   django:
     &django
@@ -15,6 +16,9 @@ services:
     volumes:
       - .:/app:z
       - local_media_files:/media:z
+      # Explicitly mount node_modules, otherwise the folder will not be be present when running the container
+      # (since it was only added when the image got built). https://stackoverflow.com/a/32785014/4028896
+      - local_node_modules:/app/node_modules
     env_file:
       - ./.envs/.local/.django
       - ./.envs/.local/.postgres

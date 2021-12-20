@@ -49,7 +49,7 @@ RUN chmod +x /start-flower
 WORKDIR /app
 
 COPY ./package.json ./package-lock.json ./
-RUN npm install
+RUN npm ci
 ENV PATH ./node_modules/.bin/:$PATH
 
 ENTRYPOINT ["/entrypoint"]

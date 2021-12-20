@@ -2,7 +2,7 @@ FROM node:14-stretch-slim as client-builder
 
 WORKDIR /app
 COPY ./package.json ./package-lock.json ./
-RUN npm install && npm cache clean --force
+RUN npm ci && npm cache clean --force
 COPY . /app
 RUN npm run build
 

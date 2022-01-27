@@ -582,6 +582,12 @@ class SentMessage(Message):
     def is_reply(self):
         return False
 
+    def get_absolute_url(self):
+        # Normally the case is not null, only happens when something went wrong (or the case was deleted?)
+        if self.case is None:
+            return "/"
+        return self.case.get_absolute_url()
+
 
 class ReceivedMessage(Message):
     received_at = models.DateTimeField()
@@ -598,6 +604,12 @@ class ReceivedMessage(Message):
     @property
     def is_reply(self):
         return True
+
+    def get_absolute_url(self):
+        # Normally the case is not null, only happens when something went wrong (or the case was deleted?)
+        if self.case is None:
+            return "/"
+        return self.case.get_absolute_url()
 
 
 class ReceivedAttachment(models.Model):

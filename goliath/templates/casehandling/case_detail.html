@@ -177,6 +177,10 @@
 
     {# mini wizard #}
     <div class="text-center rounded-xl mb-8 p-4 border border-brown-1000 max-w-prose mx-auto">
+      {% if case.status == "CN" or case.status == "CP" %}
+      Sie haben den Fall als abgeschlossen markiert. Sie können den Fallstatus jederzeit ändern.
+        <br/><br/>
+      {% endif %}
 
       <div x-show="currentScreen === 'start'">
         <div class="hl-xl mb-3">Ist der Fall für Sie abgeschlossen?</div>

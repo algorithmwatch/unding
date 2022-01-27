@@ -155,7 +155,7 @@ class CaseCreateView(View):
 @login_required
 def send_autoreply(request, pk):
     case = get_object_or_404(Case, pk=pk)
-    if request.user != case.user:
+    if request.user != case.user and not request.user.is_staff:
         raise PermissionDenied()
 
     # when should it be allowed to send a auto reply

@@ -1,3 +1,4 @@
+from cleantext import clean
 from django.contrib import admin
 from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
@@ -139,9 +140,28 @@ class EntityAdmin(HistoryDeletedFilterMixin, SimpleHistoryAdmin):
     ]
 
 
-class SentMessageAdmin(
-    RemoveAdminAddButtonMixin, HistoryDeletedFilterMixin, SimpleHistoryAdmin
-):
+class SentSubjectFilter(admin.SimpleListFilter):
+    title = _("Subject")
+
+    parameter_name = "subject"
+
+    def lookups(self, request, model_admin):
+        subjects = SentMessage.objects.values_list("subject", flat=True)
+        subjects = [
+            clean(s, lower=False, no_numbers=True, replace_with_number=" ").strip()
+            for s in subjects
+        ]
+        subjects = list(set(subjects))
+
+        return [(x, x) for x in subjects]
+
+    def queryset(self, request, queryset):
+        if self.value() is None:
+            return queryset
+        return queryset.filter(subject__startswith=self.value())
+
+
+class SentMessageAdmin(RemoveAdminAddButtonMixin, SimpleHistoryAdmin):
     list_display = [
         "id",
         "created_at",
@@ -150,6 +170,7 @@ class SentMessageAdmin(
         "to_email",
         "esp_message_status",
     ]
+    list_filter = ("created_at", "to_email", HistoryDeletedFilter, SentSubjectFilter)
     ordering = ("-created_at",)
 
 

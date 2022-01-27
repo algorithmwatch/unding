@@ -142,6 +142,10 @@ class EntityAdmin(HistoryDeletedFilterMixin, SimpleHistoryAdmin):
 
 
 class SentSubjectFilter(admin.SimpleListFilter):
+    """A custom filter for the subject.
+    We remove all digits from the subject since the case id is part of the subject.
+    """
+
     title = _("Subject")
 
     parameter_name = "subject"
@@ -149,7 +153,15 @@ class SentSubjectFilter(admin.SimpleListFilter):
     def lookups(self, request, model_admin):
         subjects = SentMessage.objects.values_list("subject", flat=True)
         subjects = [
-            clean(s, lower=False, no_numbers=True, replace_with_number=" ").strip()
+            clean(
+                s,
+                lower=False,
+                no_numbers=True,
+                replace_with_number=" ",
+                fix_unicode=False,
+                to_ascii=False,
+                normalize_whitespace=False,
+            ).strip()
             for s in subjects
         ]
         subjects = list(set(subjects))

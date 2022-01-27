@@ -28,6 +28,11 @@ class Survey(TimeStampMixin):
     icon_name = models.CharField(
         max_length=255, null=True, blank=True, help_text="Font Awesome Icon Names"
     )
+    order = models.FloatField(
+        null=True,
+        blank=True,
+        help_text="If not null, show this casetype on the front page. In order of this value.",
+    )
     tags = TaggableManager(blank=True)
 
     def __str__(self) -> str:

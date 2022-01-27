@@ -1,0 +1,79 @@
+{% load i18n %}
+
+<div
+x-data="{ selectedCase: null }"
+class="mt-10 mx-auto"
+:class="{
+    'w-max grid gap-4 lg:gap-8 justify-items-center sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4': selectedCase === null,
+    'w-full max-w-3xl': selectedCase !== null
+}"
+>
+{% for case in featured_case_types %}
+  <div
+    class="
+      bg-white border border-brown-1000
+      rounded-t-2xl rounded-bl-2xl
+    "
+    x-show="selectedCase === null || selectedCase === '{{ case.id }}'"
+    :class="{ 'w-240': selectedCase === null, 'w-full': selectedCase === '{{ case.id }}' }"
+  >
+    <div
+      class="flex flex-col items-center px-5 py-6 cursor-pointer"
+      x-show="selectedCase !== '{{ case.id }}'"
+      @click.stop="selectedCase = '{{ case.id }}'"
+    >
+      {# Icon #}
+      {% if case.icon_name %}
+        <div
+          class="text-3xl flex items-center justify-center rounded-full bg-orange-100 w-16 h-16"
+        >
+          <i class="{{ case.icon_name }}"></i>
+        </div>
+      {% endif %}
+
+      {# Name #}
+      <div class="font-bold text-lg leading-6 mt-3">{{ case.title }}</div>
+
+      {# Border #}
+      <div class="border-t border-brown-1000 h-px w-28 my-4"></div>
+
+      {# Short title #}
+      <div class="italic">{{ case.claim }}</div>
+    </div>
+
+    {# Case description visible when selected #}
+    <div
+      class="relative flex flex-col items-center px-4 sm:px-8 py-10"
+      x-show="selectedCase === '{{ case.id }}'">
+
+      {# Icon #}
+      {% if case.icon_name %}
+        <div
+          class="text-3xl flex items-center justify-center"
+        >
+          <i class="{{ case.icon_name }}"></i>
+        </div>
+      {% endif %}
+
+      {# Name #}
+      <div class="font-bold text-xl leading-6 my-4">{{ case.title }}</div>
+
+      <div>
+        {{ case.short_description }}
+      </div>
+      <div class="mt-6">
+        <a href="{{ case.get_absolute_url }}" class="btn btn--regular btn--primary">{% trans button_label %}</a>
+      </div>
+
+      {# Close button #}
+      <button
+        type="button"
+        class="p-4 absolute right-1 top-0 text-lg text-brown-800 hover:opacity-80"
+        x-show="selectedCase === '{{ case.id }}'"
+        @click="selectedCase = null"
+      >
+        <i class="fa fa-times"></i>
+      </button>
+    </div>
+  </div>
+{% endfor %}

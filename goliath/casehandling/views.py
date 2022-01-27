@@ -25,6 +25,8 @@ from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
 from ratelimit.decorators import ratelimit
 
+from goliath.survey.models import Survey
+
 from .forms import CaseStatusForm, get_admin_form_preview
 from .models import (
     Campaign,
@@ -260,6 +262,9 @@ class HomePageView(TemplateView):
         context["featured_case_types"] = CaseType.objects.filter(
             order__isnull=False
         ).order_by("order")
+        context["featured_surveys"] = Survey.objects.filter(order__isnull=False).order_by(
+            "order"
+        )
         return context
 
 

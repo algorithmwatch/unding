@@ -3,7 +3,7 @@ import datetime
 import pytest
 from freezegun import freeze_time
 
-from ..models import Case
+from ..models import Case, SentUserNotification
 from .factories import OngoingCaseFactory
 
 pytestmark = pytest.mark.django_db
@@ -130,3 +130,6 @@ def test_reminder_entities_fake_date_remind_and_stop():
 
     # don't send because we already send two emails
     assert Case.objects.remind_entities() == 0
+
+    # 2 notifications were send to the users
+    assert SentUserNotification.objects.count() == 2

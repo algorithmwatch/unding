@@ -6,8 +6,14 @@ from email_reply_parser import EmailReplyParser
 
 from config import celery_app
 
-from ..utils.email import send_anymail_email
-from .models import Case, ReceivedAttachment, ReceivedMessage, SentMessage
+from ..utils.email import formated_from, send_anymail_email
+from .models import (
+    Case,
+    ReceivedAttachment,
+    ReceivedMessage,
+    SentMessage,
+    SentUserNotification,
+)
 
 
 @celery_app.task()
@@ -104,9 +110,11 @@ def send_initial_emails_to_entities(postCC):
 
 
 @celery_app.task()
-def send_user_notification_new_message(to_email, link, text, subject, full_user_name):
+def send_user_notification_new_message(
+    to_email, link, text, subject, full_user_name, case
+):
     """Notify user about incoming new email"""
-    send_anymail_email(
+    esp_message_id, esp_message_status, body_text, _ = send_anymail_email(
         to_email,
         text,
         subject=subject,
@@ -114,36 +122,83 @@ def send_user_notification_new_message(to_email, link, text, subject, full_user_
         ctaLabel="zur Antwort",
         full_user_name=full_user_name,
     )
-
-
-@celery_app.task()
-def send_user_notification_reminder(to_email, link, text, subject, full_user_name):
-    """Remind user about open case"""
-    send_anymail_email(
-        to_email, text, subject=subject, ctaLink=link, full_user_name=full_user_name
+    SentUserNotification.objects.create(
+        case=case,
+        subject=subject,
+        content=body_text,
+        esp_message_id=esp_message_id,
+        esp_message_status=esp_message_status,
+        sent_at=datetime.datetime.utcnow(),
+        from_email=formated_from(),
+        to_email=to_email,
+        notification_type="Notify user about incoming new email",
     )
 
 
 @celery_app.task()
-def send_user_notification_new_comment(to_email, link, full_user_name):
+def send_user_notification_reminder(
+    to_email, link, text, subject, full_user_name, case
+):
+    """Remind user about open case"""
+    esp_message_id, esp_message_status, body_text, _ = send_anymail_email(
+        to_email, text, subject=subject, ctaLink=link, full_user_name=full_user_name
+    )
+    SentUserNotification.objects.create(
+        case=case,
+        subject=subject,
+        content=body_text,
+        esp_message_id=esp_message_id,
+        esp_message_status=esp_message_status,
+        sent_at=datetime.datetime.utcnow(),
+        from_email=formated_from(),
+        to_email=to_email,
+        notification_type="Remind user about open case",
+    )
+
+
+@celery_app.task()
+def send_user_notification_new_comment(to_email, link, full_user_name, case):
     """Inform user about new comment"""
-    send_anymail_email(
+    subject = "Neuer Kommentar zu Ihrem Fall"
+    esp_message_id, esp_message_status, body_text, _ = send_anymail_email(
         to_email,
         "Neuer Kommentar zu Ihrem Fall",
-        subject="Neuer Kommentar zu Ihrem Fall",
+        subject=subject,
         ctaLink=link,
         full_user_name=full_user_name,
+    )
+    SentUserNotification.objects.create(
+        case=case,
+        subject=subject,
+        content=body_text,
+        esp_message_id=esp_message_id,
+        esp_message_status=esp_message_status,
+        sent_at=datetime.datetime.utcnow(),
+        from_email=formated_from(),
+        to_email=to_email,
+        notification_type="Inform user about new comment",
     )
 
 
 @celery_app.task()
 def send_user_notification_reminder_to_entity(
-    to_email, link, text, subject, full_user_name
+    to_email, link, text, subject, full_user_name, case
 ):
     """notify user about sent notification to entity"""
 
-    send_anymail_email(
+    esp_message_id, esp_message_status, body_text, _ = send_anymail_email(
         to_email, text, subject=subject, ctaLink=link, full_user_name=full_user_name
+    )
+    SentUserNotification.objects.create(
+        case=case,
+        subject=subject,
+        content=body_text,
+        esp_message_id=esp_message_id,
+        esp_message_status=esp_message_status,
+        sent_at=datetime.datetime.utcnow(),
+        from_email=formated_from(),
+        to_email=to_email,
+        notification_type="notify user about sent notification to entity",
     )
 
 

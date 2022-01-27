@@ -15,6 +15,7 @@ from .models import (
     ReceivedAttachment,
     ReceivedMessage,
     SentMessage,
+    SentUserNotification,
 )
 
 
@@ -185,6 +186,19 @@ class ReceivedMessageAdmin(SentMessageAdmin):
     ]
 
 
+class SentUserNotificationAdmin(RemoveAdminAddButtonMixin, admin.ModelAdmin):
+    list_display = [
+        "id",
+        "created_at",
+        "notification_type",
+        "to_email",
+        "esp_message_status",
+        "case",
+    ]
+    list_filter = ("created_at", "to_email", "notification_type")
+    ordering = ("-created_at",)
+
+
 class ExternalSupportAdmin(HistoryDeletedFilterMixin, SimpleHistoryAdmin):
     list_display = [
         "id",
@@ -221,6 +235,7 @@ admin.site.register(ExternalSupport, ExternalSupportAdmin)
 admin.site.register(ReceivedMessage, ReceivedMessageAdmin)
 admin.site.register(ReceivedAttachment, ReceivedAttachmentAdmin)
 admin.site.register(SentMessage, SentMessageAdmin)
+admin.site.register(SentUserNotification, SentUserNotificationAdmin)
 admin.site.register(AutoreplyKeyword, AutoreplyKeywordAdmin)
 admin.site.register(Campaign, CampaignAdmin)
 

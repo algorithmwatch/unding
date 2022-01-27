@@ -47,7 +47,9 @@ def post_comment(sender, **kwargs):
             + str(instance.pk)
         )
 
-        send_user_notification_new_comment(user_email, link, user_name)
+        send_user_notification_new_comment(
+            user_email, link, user_name, instance.content_object.case
+        )
 
     # always inform
     send_admin_notification_new_comment()

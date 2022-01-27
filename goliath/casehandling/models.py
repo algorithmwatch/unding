@@ -349,6 +349,7 @@ class Case(TimeStampMixin):
                 text,
                 f"Neue Antwort #{self.pk}",
                 self.user.full_name,
+                self,
             )
             self.status = self.Status.WAITING_USER_INPUT
             self.save()
@@ -386,6 +387,7 @@ class Case(TimeStampMixin):
             text,
             "Bitte setzen Sie den Status #" + str(self.pk),
             self.user.full_name,
+            self,
         )
         self.last_user_reminder_sent_at = timezone.now()
         self.sent_user_reminders += 1
@@ -432,6 +434,7 @@ Den aktuellen Status Ihres Falles können Sie hier einsehen:
             notify_text,
             "Erinnerung verschickt #" + str(self.pk),
             self.user.full_name,
+            self,
         )
 
     def send_auto_reply_message_to_entity(self):
@@ -612,6 +615,11 @@ class ReceivedAttachment(models.Model):
     def __str__(self):
         return self.file.url
 
+
+class SentUserNotification(Message):
+    esp_message_id = models.CharField(max_length=255, null=True)
+    esp_message_status = models.CharField(max_length=255, null=True)
+    notification_type = models.CharField(max_length=255)
 
 # FIXME: currently not used
 class UserReplyChoice(models.Model):

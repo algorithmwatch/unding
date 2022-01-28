@@ -262,9 +262,9 @@ class HomePageView(TemplateView):
         context["featured_case_types"] = CaseType.objects.filter(
             order__isnull=False
         ).order_by("order")
-        context["featured_surveys"] = Survey.objects.filter(order__isnull=False).order_by(
-            "order"
-        )
+        context["featured_surveys"] = Survey.objects.filter(
+            order__isnull=False
+        ).order_by("order")
         return context
 
 

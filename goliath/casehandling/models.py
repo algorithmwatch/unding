@@ -633,6 +633,7 @@ class SentUserNotification(Message):
     esp_message_status = models.CharField(max_length=255, null=True)
     notification_type = models.CharField(max_length=255)
 
+
 # FIXME: currently not used
 class UserReplyChoice(models.Model):
     subject = models.CharField(max_length=255)

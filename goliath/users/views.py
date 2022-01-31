@@ -3,6 +3,11 @@ This implementation of magic link authentification is not ellegant. Take a look 
 https://github.com/algorithmwatch/dataskop-platform/tree/main/dataskop/users
 to see a more polished solution. If this project ever gets a large refactoring, the user app
 should get improved.
+
+Things that need to get changed:
+
+- Merge magic login and magic registration into one view
+
 """
 
 
@@ -126,9 +131,33 @@ class MagicLinkLoginEmail(View):
                 request, "Es wurde kein Account mit diese E-Mail-Adresse gefunden."
             )
             return redirect("account_login")
+
+        email_address = EmailAddress.objects.filter(user=user, email=email).first()
+
+        if not email_address:
+            raise PermissionDenied
+
+        redirect_url = "cases"
+        if not email_address.verified:
+            email_address.verified = True
+            email_address.set_as_primary(conditional=True)
+            email_address.save()
+
+            # very hacky way to determine if the post creation form was already filled or not
+            # need to do it here because the new user need to be logged in
+            first_post_cc = PostCaseCreation.objects.filter(
+                sent_initial_emails_at__isnull=True, user=user
+            ).first()
+            if first_post_cc is not None:
+                redirect_url = first_post_cc.get_absolute_url()
+
+            # change status, send emails etc.
+            for c in PostCaseCreation.objects.filter(user=user):
+                c.user_verified_afterwards()
+
         messages.success(request, "Login erfolgreich")
         login(request, user)
-        return redirect("account_index")
+        return redirect(redirect_url)
 
 
 @method_decorator(never_cache, name="dispatch")

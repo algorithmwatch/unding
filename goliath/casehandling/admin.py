@@ -196,6 +196,7 @@ class ReceivedMessageAdmin(SentMessageAdmin):
         "to_email",
         "is_autoreply",
     ]
+    list_filter = ("created_at", "to_email", HistoryDeletedFilter)
 
 
 class SentUserNotificationAdmin(RemoveAdminAddButtonMixin, admin.ModelAdmin):

@@ -17,6 +17,7 @@ from .views import (
     admin_preview_letter_view,
     preview_letter_text_view,
     send_autoreply,
+    send_user_message_history_view,
 )
 
 router = routers.DefaultRouter()
@@ -50,6 +51,11 @@ urlpatterns = [
         name="campaign-detail",
     ),
     path("fall-auto-reply/<int:pk>/", view=send_autoreply, name="case-sent-autoreply"),
+    path(
+        "fall-nachrichten-verlauf/<int:pk>/",
+        view=send_user_message_history_view,
+        name="case-message-history",
+    ),
     path(
         "falltyp-text/<int:pk>/",
         view=preview_letter_text_view,

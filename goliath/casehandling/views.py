@@ -2,8 +2,8 @@ import datetime
 import json
 import traceback
 
-from django.utils import timezone
 from allauth.account.models import EmailAddress
+from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
@@ -14,6 +14,7 @@ from django.db.models import Count
 from django.http import FileResponse, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls.base import reverse
+from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_control, never_cache
 from django.views.decorators.clickjacking import xframe_options_exempt
@@ -36,7 +37,10 @@ from .models import (
     PublicFile,
     ReceivedAttachment,
 )
-from .tasks import send_admin_notification_waiting_approval_case
+from .tasks import (
+    send_admin_notification_waiting_approval_case,
+    send_user_message_history,
+)
 
 User = get_user_model()
 
@@ -168,6 +172,38 @@ def send_autoreply(request, pk):
     case.status = Case.Status.WAITING_RESPONSE
     case.save()
 
+    return redirect(case)
+
+
+@csrf_exempt
+@never_cache
+@require_POST
+@login_required
+def send_user_message_history_view(request, pk):
+    case = get_object_or_404(Case, pk=pk)
+    if request.user != case.user and not request.user.is_staff:
+        raise PermissionDenied()
+
+    user = case.user
+
+    # only send the email if the user is already verified
+    if not EmailAddress.objects.filter(
+        email=user.email, user=user, verified=True
+    ).exists():
+        raise PermissionDenied()
+
+    text = case.construct_answer_thread()
+
+    text = "anbei der Nachrichtenverlauf Ihres Falles auf Unding.de.\n\n" + text
+
+    send_user_message_history(
+        user.email, text, "Ihr Nachrichtenverlauf auf Unding.de", user.full_name, case
+    )
+
+    messages.success(
+        request,
+        "Eine E-Mail mit dem Nachrichtenverlauf wurde soeben an Sie verschickt.",
+    )
     return redirect(case)
 
 

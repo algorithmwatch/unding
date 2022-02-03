@@ -203,6 +203,26 @@ def send_user_notification_reminder_to_entity(
 
 
 @celery_app.task()
+def send_user_message_history(to_email, text, subject, full_user_name, case):
+    """export own message history and send to user"""
+
+    esp_message_id, esp_message_status, body_text, _ = send_anymail_email(
+        to_email, text, subject=subject, full_user_name=full_user_name
+    )
+    SentUserNotification.objects.create(
+        case=case,
+        subject=subject,
+        content=body_text,
+        esp_message_id=esp_message_id,
+        esp_message_status=esp_message_status,
+        sent_at=datetime.datetime.utcnow(),
+        from_email=formated_from(),
+        to_email=to_email,
+        notification_type="message history export",
+    )
+
+
+@celery_app.task()
 def send_entity_message(to_email, case, text, subject):
     """Remind user about open case"""
     from_email = case.email

@@ -208,10 +208,11 @@
 
       <div x-show="currentScreen === 'alternatives'">
         <div class="hl-xl mb-3">Was möchten Sie als nächstes tun?</div>
-        <div class="mb-4">Erwarten Sie noch eine Antwort? Dann klicken Sie auf "Weiter warten".<br>Möchten Sie eine Nachricht an den Empfänger senden oder das Unding-Team kontaktieren? Dann wählen Sie die letztere Option.</div>
+        <div class="mb-4">Erwarten Sie noch eine Antwort? Dann klicken Sie auf "Weiter warten".<br>Möchten Sie eine Nachricht an den Empfänger senden oder das Unding-Team kontaktieren? Dann wählen Sie die zweite Option.</div>
         <div class="flex flex-wrap justify-center">
           <button type="button" class="m-1 btn btn--regular btn--outline" @click="currentScreen = 'please_wait'; new_status = 'WR'; setTimeout(function() {document.getElementById('aw-status-update-form').submit()}, 1000)">Weiter warten</button>
           <button type="button" class="m-1 btn btn--regular btn--outline" @click="currentScreen = 'react_options'">Auf die letzte Nachricht reagieren</button>
+          <button type="button" class="m-1 btn btn--regular btn--outline" @click="sendMessagesToOwnEmail()">Nachrichtenverlauf an eigene E-Mail-Adresse senden</button>
         </div>
       </div>
 
@@ -237,6 +238,10 @@
     </div>
 
     <button type="submit" class="btn btn--regular btn--primary">Abschicken</button>
+
+  </form>
+
+  <form id="message-history-form" class="hidden max-w-prose mx-auto" method="POST" action="{% url 'case-message-history' case.pk %}" >
 
   </form>
 
@@ -275,6 +280,11 @@
     setTimeout(function () {
       form.scrollIntoView({block: "start", behavior: "smooth"})
     }, 0)
+  }
+
+  function sendMessagesToOwnEmail() {
+    const form = document.getElementById('message-history-form')
+    form.submit()
   }
 
 </script>

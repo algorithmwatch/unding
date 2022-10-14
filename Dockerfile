@@ -10,7 +10,7 @@ COPY . /app
 RUN npm run build
 
 # Python build stage
-FROM python:3.8.14-slim-buster
+FROM python:3.8.15-slim-buster
 
 ENV PYTHONUNBUFFERED 1
 

@@ -35,7 +35,7 @@
     "stylelint-scss": "^3.18.0",
     "survey-jquery": "^1.8.25",
     "terser-webpack-plugin": "^5.1.1",
-    "webpack": "^5.20.2",
+    "webpack": "^5.76.0",
     "webpack-cli": "^4.5.0",
     "webpack-dev-server": "^4.11.1"
   },

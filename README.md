@@ -4,6 +4,20 @@ The Goliath project by [AlgorithmWatch](https://algorithmwatch.org/) powering [U
 
 This project was initially bootstrapped with [Django-Cookie-Cutter](https://github.com/pydanny/cookiecutter-django) but heavily modified.
 
+## Background
+
+This software was created at the end of 2020 and the beginning of 2021 and only maintained afterward.
+The main idea: People can report pre-defined cases of discrimination to the website via a chat-based form.
+We create text based on the form responses and that an email to a responsible organization.
+The organization should solve the issue.
+We store the whole conversation regarding the case on our website (only visible to the user).
+A public dashboard provides insight in which organizations resolve which cases (this was not implemented).
+The project was created as an MVP, some features are only implemented roughly (e.g. the email validation should be improved if you continue using the code).
+The forms for the cases were created with surveyjs (<https://surveyjs.io/>).
+This should enable the non-technical people on the project to create new cases.
+However, the surveyjs form has to follow certain standards.
+Check out the example files (todo).
+
 ## Development setup
 
 Get the code, create .ENV files for local development.

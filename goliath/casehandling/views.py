@@ -303,6 +303,11 @@ class HomePageView(TemplateView):
         ).order_by("order")
         return context
 
+@method_decorator(cache_control(max_age=3600, public=True), name="dispatch")
+class OverPageView(TemplateView):
+    template_name = "pages/over.html"
+
+
 
 @method_decorator(cache_control(max_age=3600, public=True), name="dispatch")
 class DashboardPageView(TemplateView):

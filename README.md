@@ -6,7 +6,7 @@ This project was initially bootstrapped with [Django-Cookie-Cutter](https://gith
 
 ## Background
 
-This software was created at the end of 2020 and the beginning of 2021 and only maintained afterward.
+This software was created at the end of 2020 and in the beginning of 2021 and only maintained afterward.
 The main idea: People can report pre-defined cases of discrimination to the website via a chat-based form.
 We create text based on the form responses and that an email to a responsible organization.
 The organization should solve the issue.

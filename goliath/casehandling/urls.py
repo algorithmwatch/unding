@@ -29,7 +29,8 @@ urlpatterns = [
     path("", HomePageView.as_view(), name="home"),
     path("dashboard/", DashboardPageView.as_view(), name="dashboard"),
     path("neu/", view=OverPageView.as_view(), name="new"),
-    # If you want to reuse the code, remove the line above and uncomment the next two lines
+    path("neu/<str:slug>/<int:pk>/", view=OverPageView.as_view(), name="new-wizzard"),
+    # If you want to reuse the code, remove the two lines above and uncomment the next two lines
     # path("neu/", view=CaseTypeListView.as_view(), name="new"),
     # path("neu/<str:slug>/<int:pk>/", view=CaseCreateView.as_view(), name="new-wizzard"),
     path(
